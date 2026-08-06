@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Footer from "./Footer";
 
 const MobileNav = ({ user }: MobileNavProps) => {
   const pathname = usePathname();
@@ -47,11 +48,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
           </Link>
 
           <div className="mobilenav-sheet">
-            <SheetClose
-              render={
-                <nav className="flex h-full flex-col gap-6 pt-16 text-white" />
-              }
-            >
+            <nav className="flex h-full flex-col gap-6 pt-16 text-white">
               {sidebarLinks.map((item) => {
                 const isActive =
                   pathname === item.route ||
@@ -60,6 +57,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 return (
                   <SheetClose
                     key={item.route}
+                    nativeButton={false}
                     render={
                       <Link
                         href={item.route}
@@ -89,12 +87,10 @@ const MobileNav = ({ user }: MobileNavProps) => {
                   </SheetClose>
                 );
               })}
+              USER
+            </nav>
 
-
-              USER 
-            </SheetClose>
-
-            FOOTER 
+            <Footer user={user} type="mobile" />
           </div>
         </SheetContent>
       </Sheet>
