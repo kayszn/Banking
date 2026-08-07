@@ -3,6 +3,8 @@ import Link from "next/link";
 import BankCard from "./BankCard";
 
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
+  console.log("RightSidebar user:", user);
+  
   return (
     <aside className="right-sidebar">
       <section className="flex flex-col pb-8">
