@@ -5,6 +5,8 @@ import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { formatAmount } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 type SearchParamProps = {
   searchParams: Promise<{ id?: string; page?: string }>;
 };
