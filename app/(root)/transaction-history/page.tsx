@@ -1,6 +1,7 @@
 import HeaderBox from "@/components/HeaderBox";
 import { Pagination } from "@/components/Pagination";
 import TransactionsTable from "@/components/TransactionsTable";
+import TransferBalanceRefresh from "@/components/TransferBalanceRefresh";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { formatAmount } from "@/lib/utils";
@@ -64,15 +65,17 @@ const TransactionHistory = async ({ searchParams }: SearchParamProps) => {
           </div>
         </div>
 
-        <section className="flex w-full flex-col gap-6">
-          <TransactionsTable transactions={currentTransactions} />
+        <TransferBalanceRefresh transactions={account?.transactions ?? []}>
+          <section className="flex w-full flex-col gap-6">
+            <TransactionsTable transactions={currentTransactions} />
 
-          {totalPages > 1 && (
-            <div className="my-4 w-full">
-              <Pagination page={currentPage} totalPages={totalPages} />
-            </div>
-          )}
-        </section>
+            {totalPages > 1 && (
+              <div className="my-4 w-full">
+                <Pagination page={currentPage} totalPages={totalPages} />
+              </div>
+            )}
+          </section>
+        </TransferBalanceRefresh>
       </div>
     </div>
   );

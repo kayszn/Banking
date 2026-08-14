@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import {
   Table,
   TableBody,
@@ -33,6 +37,14 @@ const CategoryBadge = ({ category }: CategoryBadgeProps) => {
 };
 
 const TransactionsTable = ({ transactions }: TransactionTableProps) => {
+  const [, setCurrentTime] = useState(() => Date.now());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setCurrentTime(Date.now()), 1_000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-auto">
       <Table className="w-full min-w-[750px]">

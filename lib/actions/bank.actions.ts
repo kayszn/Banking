@@ -10,7 +10,7 @@ import {
 } from "plaid";
 
 import { plaidClient } from "../plaid";
-import { parseStringify } from "../utils";
+import { getTransferBalanceAdjustment, parseStringify } from "../utils";
 
 import { getTransactionsByBankId } from "./transaction.actions";
 import { getBanks, getBank } from "./user.actions";
@@ -28,6 +28,14 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
         });
         const accountData = accountsResponse.data.accounts[0];
 
+        const transferTransactionsData = await getTransactionsByBankId({
+          bankId: bank.$id,
+        });
+        const transferBalanceAdjustment = getTransferBalanceAdjustment(
+          transferTransactionsData?.documents ?? [],
+          bank.$id,
+        );
+
         // get institution info from plaid
         const institution = await getInstitution({
           institutionId: accountsResponse.data.item.institution_id!,
@@ -35,8 +43,10 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 
         const account = {
           id: accountData.account_id,
-          availableBalance: accountData.balances.available!,
-          currentBalance: accountData.balances.current!,
+          availableBalance:
+            accountData.balances.available! + transferBalanceAdjustment,
+          currentBalance:
+            accountData.balances.current! + transferBalanceAdjustment,
           institutionId: institution.institution_id,
           name: accountData.name,
           officialName: accountData.official_name,
@@ -94,6 +104,10 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
         type: transferData.senderBankId === bank.$id ? "debit" : "credit",
       })
     );
+    const transferBalanceAdjustment = getTransferBalanceAdjustment(
+      transferTransactionsData.documents,
+      bank.$id,
+    );
 
     // get institution info from plaid
     const institution = await getInstitution({
@@ -106,8 +120,9 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
 
     const account = {
       id: accountData.account_id,
-      availableBalance: accountData.balances.available!,
-      currentBalance: accountData.balances.current!,
+      availableBalance:
+        accountData.balances.available! + transferBalanceAdjustment,
+      currentBalance: accountData.balances.current! + transferBalanceAdjustment,
       institutionId: institution.institution_id,
       name: accountData.name,
       officialName: accountData.official_name,

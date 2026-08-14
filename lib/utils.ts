@@ -187,13 +187,33 @@ export function decryptId(id: string) {
   return atob(id);
 }
 
-export const getTransactionStatus = (date: Date) => {
-  const today = new Date();
-  const twoDaysAgo = new Date(today);
-  twoDaysAgo.setDate(today.getDate() - 2);
+export const TRANSFER_PROCESSING_DURATION_MS = 60_000;
 
-  return date > twoDaysAgo ? "Processing" : "Success";
+export const getTransactionStatus = (date: Date) => {
+  const oneMinuteAgo = new Date(Date.now() - TRANSFER_PROCESSING_DURATION_MS);
+
+  return date > oneMinuteAgo ? "Processing" : "Success";
 };
+
+export const getTransferBalanceAdjustment = (
+  transactions: Transaction[],
+  bankId: string,
+) =>
+  transactions.reduce((adjustment, transaction) => {
+    if (
+      !transaction.$createdAt ||
+      getTransactionStatus(new Date(transaction.$createdAt)) !== "Success"
+    ) {
+      return adjustment;
+    }
+
+    const amount = Number(transaction.amount);
+    if (!Number.isFinite(amount)) return adjustment;
+
+    return transaction.senderBankId === bankId
+      ? adjustment - amount
+      : adjustment + amount;
+  }, 0);
 
 export const AuthFormSchema = (type: string) => z.object({
   // sign up
