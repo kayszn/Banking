@@ -13,6 +13,7 @@ const RecentTransactions = ({
   page = 1,
 }: RecentTransactionsProps) => {
   const rowsPerPage = 10;
+
   const totalPages = Math.ceil(transactions.length / rowsPerPage);
 
   const indexOfLastTransaction = page * rowsPerPage;
@@ -25,8 +26,9 @@ const RecentTransactions = ({
 
   return (
     <section className="recent-transactions">
-      <header className="flex items-center justify-between">
+      <header className="flex min-w-0 items-center justify-between gap-4">
         <h2 className="recent-transactions-label">Recent transactions</h2>
+
         <Link
           href={`/transaction-history/?id=${appwriteItemId}`}
           className="view-all-btn"
@@ -38,25 +40,30 @@ const RecentTransactions = ({
       <Tabs
         key={appwriteItemId}
         defaultValue={appwriteItemId}
-        className="w-full flex flex-col"
+        className="flex w-full min-w-0 max-w-full flex-col"
       >
-        <TabsList className="recent-transactions-tablist">
-          {accounts.map((account: Account) => (
-            <TabsTrigger key={account.id} value={account.appwriteItemId}>
-              <BankTabItem
+        <div className="w-full min-w-0 max-w-full overflow-hidden">
+          <TabsList className="recent-transactions-tablist">
+            {accounts.map((account: Account) => (
+              <TabsTrigger
                 key={account.id}
-                account={account}
-                appwriteItemId={appwriteItemId}
-              />
-            </TabsTrigger>
-          ))}
-        </TabsList>
+                value={account.appwriteItemId}
+                className="shrink-0"
+              >
+                <BankTabItem
+                  account={account}
+                  appwriteItemId={appwriteItemId}
+                />
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
 
         {accounts.map((account: Account) => (
           <TabsContent
             key={account.id}
             value={account.appwriteItemId}
-            className="space-y-4"
+            className="min-w-0 max-w-full space-y-4 overflow-hidden"
           >
             <BankInfo
               account={account}
@@ -67,7 +74,7 @@ const RecentTransactions = ({
             <TransactionsTable transactions={currentTransactions} />
 
             {totalPages > 1 && (
-              <div className="my-4 w-full">
+              <div className="my-4 w-full min-w-0">
                 <Pagination page={page} totalPages={totalPages} />
               </div>
             )}

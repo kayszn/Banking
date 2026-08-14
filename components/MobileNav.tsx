@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Footer from "./Footer";
+import PlaidLink from "./PlaidLink";
 
 const MobileNav = ({ user }: MobileNavProps) => {
   const pathname = usePathname();
@@ -34,7 +35,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
         <SheetContent side="left" className="border-none bg-white">
           <Link
             href="/"
-            className="cursor-pointer flex items-center gap-1 px-4"
+            className="cursor-pointer flex items-center gap-1 px-4 mt-3"
           >
             <Image
               src="/icons/logo.svg"
@@ -48,7 +49,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
           </Link>
 
           <div className="mobilenav-sheet">
-            <nav className="flex h-full flex-col gap-6 pt-16 text-white">
+            <nav className="flex h-full flex-col gap-6 pt-16 text-white px-4">
               {sidebarLinks.map((item) => {
                 const isActive =
                   pathname === item.route ||
@@ -87,7 +88,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                   </SheetClose>
                 );
               })}
-              USER
+              <PlaidLink user={user} />
             </nav>
 
             <Footer user={user} type="mobile" />
