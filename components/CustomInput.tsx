@@ -5,16 +5,16 @@ import { Input } from "./ui/input";
 import * as z from "zod";
 import { AuthFormSchema } from "@/lib/utils";
 
-const formSchema = AuthFormSchema("sign-up")
+const formSchema = AuthFormSchema("sign-up");
 
 interface CustomInput {
-    control: Control<z.infer<typeof formSchema>>,
-    name: FieldPath<z.infer<typeof formSchema>>,
-    label: string,
-    placeholder: string,
+  control: Control<z.infer<typeof formSchema>>;
+  name: FieldPath<z.infer<typeof formSchema>>;
+  label: string;
+  placeholder: string;
 }
 
-const CustomInput = ({ control, name, label, placeholder}: CustomInput) => {
+const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
   return (
     <Controller
       control={control}
@@ -22,12 +22,12 @@ const CustomInput = ({ control, name, label, placeholder}: CustomInput) => {
       render={({ field, fieldState }) => (
         <div className="form-item">
           <Field data-invalid={!!fieldState.error}>
-            <FieldLabel htmlFor="email" className="form-label">
+            <FieldLabel htmlFor={name} className="form-label">
               {label}
             </FieldLabel>
             <div className="flex w-full flex-col">
               <Input
-                id="email"
+                id={name}
                 placeholder={placeholder}
                 className="input-class"
                 type={name === "password" ? "password" : "text"}

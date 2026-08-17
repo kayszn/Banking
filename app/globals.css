@@ -114,12 +114,12 @@ body {
 
   /* Home */
   .home {
-  @apply flex min-h-0 min-w-0 w-full flex-1 overflow-hidden;
-}
+    @apply flex min-h-0 min-w-0 w-full flex-1 overflow-hidden;
+  }
 
   .home-content {
-  @apply no-scrollbar flex min-h-0 min-w-0 flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto px-5 py-7 sm:px-8 lg:py-12;
-}
+    @apply no-scrollbar flex min-h-0 min-w-0 flex-1 flex-col gap-8 overflow-x-hidden overflow-y-auto px-5 py-7 sm:px-8 lg:py-12;
+  }
 
   .home-header {
     @apply flex min-w-0 flex-col justify-between gap-8;
@@ -159,8 +159,8 @@ body {
 
   /* Right sidebar */
   .right-sidebar {
-  @apply no-scrollbar hidden h-screen w-[320px] shrink-0 flex-col overflow-y-auto border-l border-gray-200 bg-white xl:flex;
-}
+    @apply no-scrollbar hidden h-screen w-[320px] shrink-0 flex-col overflow-y-auto border-l border-gray-200 bg-white xl:flex;
+  }
 
   .profile-banner {
     @apply h-[120px] w-full shrink-0 bg-gradient-mesh bg-cover bg-no-repeat;
@@ -187,8 +187,8 @@ body {
   }
 
   .banks {
-  @apply flex min-w-0 max-w-full flex-col justify-between gap-8 px-6 py-8;
-}
+    @apply flex min-w-0 max-w-full flex-col justify-between gap-8 px-6 py-8;
+  }
   /* My Banks */
   .my-banks {
     @apply no-scrollbar flex min-h-0 w-full flex-1 flex-col gap-8 overflow-y-auto bg-gray-25 p-5 sm:p-8 xl:py-12;
@@ -279,7 +279,7 @@ body {
 
   /* Auth Form */
   .auth-form {
-    @apply flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8;
+    @apply flex min-h-screen w-full max-w-md sm:max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8;
   }
 
   .form-item {
@@ -287,7 +287,7 @@ body {
   }
 
   .form-label {
-    @apply text-14 w-full max-w-[280px] font-medium text-gray-700;
+    @apply text-14 w-full font-medium text-gray-700;
   }
 
   .form-message {
@@ -369,18 +369,18 @@ body {
 
   /* Sidebar */
   .sidebar {
-  @apply sticky left-0 top-0 flex h-screen w-20 shrink-0 flex-col justify-between overflow-hidden border-r border-gray-200 bg-white px-3 pt-8 text-white max-md:hidden sm:w-24 sm:p-4 xl:w-[240px] xl:p-5;
-}
+    @apply sticky left-0 top-0 flex h-screen w-20 shrink-0 flex-col justify-between overflow-hidden border-r border-gray-200 bg-white px-3 pt-8 text-white max-md:hidden sm:w-24 sm:p-4 xl:w-[240px] xl:p-5;
+  }
 
   .sidebar-logo {
     @apply text-26 font-ibm-plex-serif font-bold text-black-1 max-xl:hidden;
   }
 
   .sidebar-link {
-  @apply flex items-center justify-center gap-3 rounded-lg py-1 md:p-3 xl:justify-start xl:p-4;
-}
+    @apply flex items-center justify-center gap-3 rounded-lg py-1 md:p-3 xl:justify-start xl:p-4;
+  }
 
   .sidebar-label {
-  @apply text-16 font-semibold text-black-2 max-xl:hidden;
-}
+    @apply text-16 font-semibold text-black-2 max-xl:hidden;
+  }
 }

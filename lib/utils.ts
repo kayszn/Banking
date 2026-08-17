@@ -215,17 +215,84 @@ export const getTransferBalanceAdjustment = (
       : adjustment + amount;
   }, 0);
 
-export const AuthFormSchema = (type: string) => z.object({
-  // sign up
-  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
-  city: type === "sign-in" ? z.string().optional() : z.string().max(50),
-  state: type === "sign-in" ? z.string().optional() : z.string().min(2).max(2),
-  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3).max(6),
-  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  ssn: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  // both
-  email: z.string().email(),
-  password: z.string().min(8, "Required"),
-});
+export const AuthFormSchema = (type: string) =>
+  z.object({
+    // sign up
+    firstName:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "First name must be at least 3 characters"),
+
+    lastName:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().min(3, "Last name must be at least 3 characters"),
+
+    address1:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .min(1, "Address is required")
+            .max(50, "Address must be less than 50 characters"),
+
+    city:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .min(2, "City must be at least 2 characters")
+            .max(50, "City must be less than 50 characters"),
+
+    state:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().length(2, "State must be exactly 2 letters (e.g., NY)"),
+
+    postalCode:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().regex(/^\d{5,6}$/, "Postal code must be 5-6 digits"),
+
+    dateOfBirth:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .regex(
+              /^\d{4}-\d{2}-\d{2}$/,
+              "Date of Birth must be in YYYY-MM-DD format (e.g., 1990-05-15)",
+            )
+            .refine((date) => {
+              const d = new Date(date);
+              return d instanceof Date && !isNaN(d.getTime());
+            }, "Please enter a valid date"),
+
+    ssn:
+      type === "sign-in"
+        ? z.string().optional()
+        : z.string().regex(/^\d{4}$/, "SSN must be 4 digits (e.g., 1234)"),
+
+    // both
+    email: z.string().email("Please enter a valid email address"),
+
+    password:
+      type === "sign-in"
+        ? z.string().min(1, "Password is required")
+        : z
+            .string()
+            .min(8, "Password must be at least 8 characters")
+            .regex(
+              /[A-Z]/,
+              "Password must contain at least one uppercase letter",
+            )
+            .regex(
+              /[a-z]/,
+              "Password must contain at least one lowercase letter",
+            )
+            .regex(/\d/, "Password must contain at least one number")
+            .regex(
+              /[!@#$%^&*]/,
+              "Password must contain at least one special character (!@#$%^&*)",
+            ),
+  });

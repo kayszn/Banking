@@ -55,10 +55,15 @@ export const signIn = async ({ email, password }: signInProps) => {
     const user = await getUserInfo({ userId: session.userId });
 
     return parseStringify(user);
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error("Sign in error:", error);
+    if (error?.message?.includes("Invalid credentials") || error?.message?.includes("No user")) {
+      throw new Error("Invalid email or password. Please check your credentials and try again.");
+    }
+    throw new Error(error?.message || "An error occurred during sign in. Please try again.");
   }
 };
+
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   const { email, firstName, lastName } = userData;
@@ -68,21 +73,31 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
   try {
     const { account, database } = await createAdminClient();
 
-    newUserAccount = await account.create(
-      ID.unique(),
-      email,
-      password,
-      `${firstName} ${lastName}`,
-    );
+    try {
+      newUserAccount = await account.create(
+        ID.unique(),
+        email,
+        password,
+        `${firstName} ${lastName}`,
+      );
+    } catch (accountError: any) {
+      if (accountError?.message?.includes("already exists")) {
+        throw new Error("This email is already registered. Please use a different email or sign in to your account.");
+      }
+      if (accountError?.message?.includes("password")) {
+        throw new Error("Password must be at least 8 characters and contain uppercase, lowercase, numbers, and special characters.");
+      }
+      throw accountError;
+    }
 
-    if (!newUserAccount) throw new Error("Error creating user");
+    if (!newUserAccount) throw new Error("Failed to create user account");
 
     const dwollaCustomerUrl = await createDwollaCustomer({
       ...userData,
       type: "personal",
     });
 
-    if (!dwollaCustomerUrl) throw new Error("Error creating Dwolla customer");
+    if (!dwollaCustomerUrl) throw new Error("Failed to verify your banking information. Please check your details and try again.");
 
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
@@ -113,8 +128,9 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     });
 
     return parseStringify(newUser);
-  } catch (error) {
-    console.error("Error", error);
+  } catch (error: any) {
+    console.error("Sign up error:", error);
+    throw new Error(error?.message || "An error occurred during sign up. Please try again.");
   }
 };
 
